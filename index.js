@@ -11,6 +11,10 @@ const app = express();
 
 //Configurar CORS
 app.use(cors());
+
+//Lectura y parceo del body 
+app.use( express.json() );
+
 //Base de datos
 dbConnection();
 
@@ -18,15 +22,12 @@ console.log( process.env );
 //david1975
 //david1975
 //mongodb+srv://david1975:david1975@cluster0.gwy9h.mongodb.net/hospitaldb
+//Otro usuari
+//mean_user
+//cF6AfJFh28dQNNkM
 //Rutas
-app.get( '/', (req, res) => {
-
-    res.json({
-        ok: true,
-        msg: 'Hola Mundo'
-    });
-
-});
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
 
 
 app.listen(process.env.PORT, () =>{
