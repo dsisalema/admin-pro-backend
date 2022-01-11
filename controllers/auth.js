@@ -94,7 +94,7 @@ const googleSignIn = async (req, res = response) => {
     } catch (error) {
         
         res.status(401).json({
-            ok: trfalseue,
+            ok: false,
             msg: 'Token no es correcto'
     
         });
@@ -102,10 +102,24 @@ const googleSignIn = async (req, res = response) => {
     }
 
 
+}
+
+const renewToken = async (req, res = response ) => {
+    const uid = req.uid;
+    //Generar un token
+    const token = await generarJWT( uid );
+        
+    res.json({
+        ok: true,
+        token
+
+    });
+
 
 }
 
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    renewToken
 }

@@ -47,20 +47,74 @@ const getHospitales = async(req, res) => {
 
     const actualizarHospital = async(req, res) => {
 
+        const id = req.params.id;
+        const uid = req.uid;
 
-        res.json({
-            ok: true,
-            msg: 'ActualizarHospital'
-        });
+        try {
+            
+            const hospital = await Hospital.findById (id);
+
+            if ( !hospital ) {
+                return res.status(404).json({
+                    ok: fatruelse,
+                    msg: 'Hospital no encontrado por id',
+                })
+            }
+
+            const cambiosHospital = {
+               ...req.body,
+               usuario: uid
+
+            }
+
+            const hospitalActualizado = await Hospital.findByIdAndUpdate ( id, cambiosHospital, { new: true});
+
+
+            res.json({
+                ok: true,
+                hospitalActualizado
+            });
+
+        } catch (error) {
+            res.status(5000).json({
+                ok: false,
+                msg: 'Hable con el administrador'
+            })
+        }
+
+    
     }
 
     const borrarHospital = async(req, res) => {
 
+        const id = req.params.id;
 
-        res.json({
-            ok: true,
-            msg: 'borrarHospital'
-        });
+        try {
+            
+            const hospital = await Hospital.findById (id);
+
+            if ( !hospital ) {
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'Hospital no encontrado por id',
+                })
+            }
+
+            await Hospital.findByIdAndDelete ( id );
+
+            res.json({
+                ok: true,
+                msg: 'Hospital Eliminado'
+            });
+
+        } catch (error) {
+            res.status(5000).json({
+                ok: false,
+                msg: 'Hable con el administrador'
+            })
+        }
+
+
     }
     
     module.exports = {
